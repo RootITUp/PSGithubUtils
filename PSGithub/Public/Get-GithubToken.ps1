@@ -23,18 +23,33 @@ General notes
 function Get-GithubToken {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName = "Data")]
+        [string]
+        $KeyData,
+        [Parameter(Mandatory, ParameterSetName = "Path")]
         [string]
         $KeyPath,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName = "Data")]
+        [Parameter(Mandatory, ParameterSetName = "Path")]
         [int]
         $AppId,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName = "Data")]
+        [Parameter(Mandatory, ParameterSetName = "Path")]
         [int]
         $InstallationId
     )
     
-    $jwt = Get-JWTToken -AppId $AppId -KeyPath $KeyPath
+    switch ($PSCmdlet.ParameterSetName) {
+        "Data" {
+            $jwt = Get-JWTToken -AppId $AppId -KeyData $KeyData
+        }
+        "Path" {
+            $jwt = Get-JWTToken -AppId $AppId -KeyPath $KeyPath
+        }
+        default {
+            throw [System.NotImplementedException]::new($PSCmdlet.ParameterSetName)
+        }
+    }
 
     $headers = @{
         Authorization          = "Bearer $jwt"

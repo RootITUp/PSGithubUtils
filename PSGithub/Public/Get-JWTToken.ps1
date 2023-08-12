@@ -1,9 +1,13 @@
 function Get-JWTToken {
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName="Data")]
+        [string]
+        $KeyData,
+        [Parameter(Mandatory, ParameterSetName="Path")]
         [string]
         $KeyPath,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName="Data")]
+        [Parameter(Mandatory, ParameterSetName="Path")]
         [int]
         $AppId,
         [ValidateScript({ $_ -gt 30 })]
@@ -33,7 +37,9 @@ function Get-JWTToken {
     # D) Create Signature
 
     ## 1.) Load PEM
-    $keyData = Get-Content -Path $KeyPath -Raw
+    if ($PSCmdlet.ParameterSetName -eq "Path"){
+        $KeyData = Get-Content -Path $KeyPath -Raw
+    }
     $reader = [System.IO.StringReader]::new($keyData)
     try{
         $pemReader = New-Object Org.BouncyCastle.OpenSsl.PemReader $reader
