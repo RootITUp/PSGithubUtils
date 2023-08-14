@@ -11,6 +11,11 @@ $token = Get-GithubToken -KeyPath C:\secret.pem -AppId 2131234 -InstallationId 5
 New-OrganizationMember -Token $token -Organization "Organization123" -Email "asdasd@test.de"
 ```
 
+```powershell
+# Given a private key encrypted via "openssl rsa -in secret.pem -aes256 -out encrypted-secret.pem"
+$token = Get-GithubToken -KeyPath C:\encrypted-secret.pem -Passphrase $passphrase -AppId 2131234 -InstallationId 5342523356
+```
+
 ## Using PowerShellForGithub
 
 ```powershell

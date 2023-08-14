@@ -29,6 +29,9 @@ function Get-GithubToken {
         [Parameter(Mandatory, ParameterSetName = "Path")]
         [string]
         $KeyPath,
+        [Parameter(ParameterSetName = "Path")]
+        [string]
+        $Passphrase,
         [Parameter(Mandatory, ParameterSetName = "Data")]
         [Parameter(Mandatory, ParameterSetName = "Path")]
         [int]
@@ -44,7 +47,7 @@ function Get-GithubToken {
             $jwt = Get-JWTToken -AppId $AppId -KeyData $KeyData
         }
         "Path" {
-            $jwt = Get-JWTToken -AppId $AppId -KeyPath $KeyPath
+            $jwt = Get-JWTToken -AppId $AppId -KeyPath $KeyPath -Passphrase $Passphrase
         }
         default {
             throw [System.NotImplementedException]::new($PSCmdlet.ParameterSetName)

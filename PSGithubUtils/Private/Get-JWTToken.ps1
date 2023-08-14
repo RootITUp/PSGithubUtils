@@ -1,13 +1,16 @@
 function Get-JWTToken {
     param(
-        [Parameter(Mandatory, ParameterSetName="Data")]
+        [Parameter(Mandatory, ParameterSetName = "Data")]
         [string]
         $KeyData,
-        [Parameter(Mandatory, ParameterSetName="Path")]
+        [Parameter(Mandatory, ParameterSetName = "Path")]
         [string]
         $KeyPath,
-        [Parameter(Mandatory, ParameterSetName="Data")]
-        [Parameter(Mandatory, ParameterSetName="Path")]
+        [Parameter(ParameterSetName = "Path")]
+        [string]
+        $Passphrase,
+        [Parameter(Mandatory, ParameterSetName = "Data")]
+        [Parameter(Mandatory, ParameterSetName = "Path")]
         [int]
         $AppId,
         [ValidateScript({ $_ -gt 30 })]
@@ -37,17 +40,19 @@ function Get-JWTToken {
     # D) Create Signature
 
     ## 1.) Load PEM
-    if ($PSCmdlet.ParameterSetName -eq "Path"){
+    if ($PSCmdlet.ParameterSetName -eq "Path") {
         $KeyData = Get-Content -Path $KeyPath -Raw
     }
-    $reader = [System.IO.StringReader]::new($keyData)
+
+    $reader = [System.IO.StringReader]::new($KeyData)
     try{
-        $pemReader = New-Object Org.BouncyCastle.OpenSsl.PemReader $reader
+        $pemReader = New-Object Org.BouncyCastle.OpenSsl.PemReader $reader, ([BasicPasswordFinder]::new($Passphrase))
         $keyPair = $pemReader.ReadObject()
-    }finally{
+    }
+    finally {
         $reader.Close()
     }
-
+    
     ## 2.) Prepare Signer
     $signer = [Org.BouncyCastle.Security.SignerUtilities]::GetSigner("SHA256withRSA")
     $signer.Init($true, $keyPair.Private)
