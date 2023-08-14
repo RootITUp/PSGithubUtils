@@ -65,9 +65,9 @@ jobs:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
         shell: pwsh
         run: |
-          New-Item -Path "./Output/PSGithub" -ItemType Directory
-          Copy-Item -Path "./PSGithub/*" -Destination "./Output/PSGithub" -Recurse
-          Publish-Module -Path "./Output/PSGithub" -NuGetApiKey $env:NUGET_KEY -Verbose
+          New-Item -Path "./Output/PSGithubUtils" -ItemType Directory
+          Copy-Item -Path "./PSGithubUtils/*" -Destination "./Output/PSGithubUtils" -Recurse
+          Publish-Module -Path "./Output/PSGithubUtils" -NuGetApiKey $env:NUGET_KEY -Verbose
     # Only publish on release
     if: ${{ github.event_name == 'release' }}
     needs: [lint-with-PSScriptAnalyzer, pester-test]
