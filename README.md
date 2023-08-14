@@ -18,3 +18,7 @@ Set-GitHubConfiguration -DisableTelemetry
 Get-GitHubOrganizationMember -AccessToken $token -OrganizationName "adesso-Copilot"
 Test-GitHubOrganizationMember -AccessToken $token -OrganizationName "adesso-Copilot" -UserName "MarkusSchoelzel"
 ```
+
+## Authors
+
+- **Torben Soennecken**

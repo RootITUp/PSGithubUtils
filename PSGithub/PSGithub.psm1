@@ -18,7 +18,7 @@ foreach ($file in $Private:files) {
 
 $securityLibPath = ""
 if ($PSVersionTable.PSVersion.Major -lt 7){
-    $securityDll = Get-ChildItem -Path ".\lib\BouncyCastle.Cryptography.2.2.1\lib\net461\BouncyCastle.Cryptography.dll"
+    $securityDll = Get-ChildItem -Path "$PSScriptRoot\lib\BouncyCastle.Cryptography.2.2.1\lib\net461\BouncyCastle.Cryptography.dll"
     $securityLibPath = $securityDll.FullName
 }else{
     throw [System.NotImplementedException]::new($PSVersionTable.PSVersion)
