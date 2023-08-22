@@ -25,4 +25,4 @@ if ($PSVersionTable.PSVersion.Major -lt 7){
 }
 
 Add-Type -Path $securityLibPath
-Add-Type -TypeDefinition (Get-Content -Path ".\lib\Private\BasicPasswordFinder.cs" -Raw) -ReferencedAssemblies @($securityLibPath)
+Add-Type -TypeDefinition (Get-Content -Path "$PSScriptRoot\lib\Private\BasicPasswordFinder.cs" -Raw) -ReferencedAssemblies @($securityLibPath)
